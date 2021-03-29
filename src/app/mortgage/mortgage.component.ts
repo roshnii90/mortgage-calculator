@@ -3,7 +3,7 @@ import { Options, LabelType } from 'ng5-slider';
 
 
 @Component({
-  selector:'mortgage-calc',
+  selector: 'app-mortgage-calc',
   templateUrl: './mortgage.component.html',
    styleUrls: [ './mortgage.component.scss'],
 })
@@ -14,28 +14,28 @@ export class MortgageComponent implements AfterViewInit {
 };
 public interest = {
   value: 8.5
-}
+};
 public tenureYrs = {
   value: 20
-}
+};
 public tenureMths = {
   value: 240
-}
+};
 
 
 public  query = {
-    amount: "",
+    amount: '',
     interest: 1,
     tenureYr: 1,
     tenureMo: 1
-  }
+  };
 
  public result = {
-    principal: "",
-    emi: "",
-    interest: "",
-    total: ""
-  }
+    principal: '',
+    emi: '',
+    interest: '',
+    total: ''
+  };
   public yrToggle: boolean;
   public poptions: Options = {
     floor: 1,
@@ -97,36 +97,36 @@ public  query = {
     this.yrToggle = true;
   }
 
-  ngOnInit() {
- 
+  ngOnInit(): void {
+
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.refresh();
   }
 
-  public enforceMinMax(el: any){
-    if(el.value != ""){
-      if(parseInt(el.value) < parseInt(el.min)){
+  public enforceMinMax(el: any): void{
+    if (el.value !== ''){
+      if (parseInt(el.value) < parseInt(el.min)){
         el.value = el.min;
       }
-      if(parseInt(el.value) > parseInt(el.max)){
+      if (parseInt(el.value) > parseInt(el.max)){
         el.value = el.max;
       }
     }
   }
 
   public update(id: any) {
-    if (id == 0) {
+    if (id === 0) {
       this.principalAmt.value = (Number(this.query.amount) / 100000);
     }
-    else if (id == 1) {
+    else if (id === 1) {
       this.interest.value = this.query.interest;
     }
-    else if (id == 2) {
+    else if (id === 2) {
       this.tenureYrs.value = this.query.tenureYr;
     }
-    else if (id == 3) {
+    else if (id === 3) {
       this.tenureMths.value = this.query.tenureMo;
     }
     this.refresh();
@@ -134,10 +134,10 @@ public  query = {
 
  public refresh() {
 
-    var loanAmount = Number(this.principalAmt.value) * 100000;
-    var numberOfMonths = (this.yrToggle) ? (Number(this.tenureYrs.value) * 12) : Number(this.tenureMths.value);
-    var rateOfInterest = Number(this.interest.value);
-    var monthlyInterestRatio = (rateOfInterest / 100) / 12;
+    const loanAmount = Number(this.principalAmt.value) * 100000;
+    const numberOfMonths = (this.yrToggle) ? (Number(this.tenureYrs.value) * 12) : Number(this.tenureMths.value);
+    const rateOfInterest = Number(this.interest.value);
+    const monthlyInterestRatio = (rateOfInterest / 100) / 12;
 
     this.query.amount = loanAmount.toString();
     this.query.interest = rateOfInterest;
@@ -148,18 +148,17 @@ public  query = {
       this.query.tenureMo = this.tenureMths.value;
     }
 
-    var top = Math.pow((1 + monthlyInterestRatio), numberOfMonths);
-    var bottom = top - 1;
-    var sp = top / bottom;
-    var emi = ((loanAmount * monthlyInterestRatio) * sp);
-    var full = numberOfMonths * emi;
-    var interest = full - loanAmount;
-    var principle  = this.query.amount;
-    this.result.principal =principle.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    this.result.emi = emi.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    var loanAmount_str = loanAmount.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    this.result.total = full.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    this.result.interest = interest.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const top = Math.pow((1 + monthlyInterestRatio), numberOfMonths);
+    const bottom = top - 1;
+    const sp = top / bottom;
+    const emi = ((loanAmount * monthlyInterestRatio) * sp);
+    const full = numberOfMonths * emi;
+    const interest = full - loanAmount;
+    const principle  = this.query.amount;
+    this.result.principal = principle.toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    this.result.emi = emi.toFixed(0).toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    this.result.total = full.toFixed(0).toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    this.result.interest = interest.toFixed(0).toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 }
 

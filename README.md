@@ -4,8 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Prerequisites
 
-JQuery (auto loaded through index.html from CDN)
-Bootstrap (auto loaded through index.html from CDN)
+JQuery (auto loaded through index.html from CDN).
+Bootstrap (auto loaded through index.html from CDN).
 Install the npm packages described in the `package.json`
 
 ## Development server
