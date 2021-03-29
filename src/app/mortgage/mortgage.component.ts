@@ -97,10 +97,6 @@ public  query = {
     this.yrToggle = true;
   }
 
-  ngOnInit(): void {
-
-  }
-
   ngAfterViewInit(): void {
     this.refresh();
   }
@@ -116,7 +112,7 @@ public  query = {
     }
   }
 
-  public update(id: any) {
+  public update(id: any): void {
     if (id === 0) {
       this.principalAmt.value = (Number(this.query.amount) / 100000);
     }
@@ -132,7 +128,7 @@ public  query = {
     this.refresh();
   }
 
- public refresh() {
+ public refresh(): void {
 
     const loanAmount = Number(this.principalAmt.value) * 100000;
     const numberOfMonths = (this.yrToggle) ? (Number(this.tenureYrs.value) * 12) : Number(this.tenureMths.value);
