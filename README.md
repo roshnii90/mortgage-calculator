@@ -1,6 +1,13 @@
 # MortageCalculator
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+This project is a Mortgage Calculator application and is generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+
+
+## Features
+
+Mortgage Calculator provides following features:
+1. Calculates Mortgage based on Amortization Period.- Yearly/monthly
+
 
 ## Prerequisites
 
