@@ -1,166 +1,138 @@
+<div class="container">
+  <div>
+    <span class=h1-header> Mortgage Calculator</span>
+
+  </div>
+</div>
+<br />
 
 <div class="container">
-    <div class="spacer">
-      <div class="row">
-        <div class="col-lg-8  col-lg-offset-1">
-          <div class="well">
-  
-            <div class="form-group">
-                <div>
-                  <h4>
-                    Mortgage Amount
-                  </h4>
-                
-                </div>
-                <hr/>
-                <div>
-                <ng5-slider [(value)]="pemi.value" [options]="poptions" (userChangeEnd)="update()"></ng5-slider>
-                </div>
-                <div> 
-                     <input type="text" style="width:150px;float:right;margin-top: -90px;" class="form-control text-box"  (blur)="tbupdate(0)"
-                  [(ngModel)]="query.amount" min="0" max= "2000000" value = "$3,00,000" data-index="1" placeholder="Loan Amount" name="pemi.highValue" onkeypress="return isNumberKey(event,'query,amount');" />
-                
-                  <input class="form-control labelMrtgCalcFormatted" style="width:150px;float:right;margin-top: -50px;"
-                  placeholder="{{query.amount | currency:'USD':true:'1.2-2'}}" disabled>
-                
-                </div>
-              </div>
-  
-  
+  <div class="spacer">
+    <div class="row">
+      <div class="col-lg-8  col-lg-offset-1">
+        <h4 class="heading-left categoryheader sub-header">Mortgage Details</h4>
+        <p>Enter your mortgage details:</p>
+        <div class="well">
+
+          <div class="form-group">
+            <div>
+              <h4>
+                Mortgage Amount
+              </h4>
+
+            </div>
             <hr />
-           
-           
-            <div class="form-group">
-                <div>
-                  <h4>
-                  Interest Rate
-               </h4>
-                </div>
-            <hr/>
-                <div>
-              <ng5-slider [(value)]="remi.value" [options]="roptions" (userChangeEnd)="update()">
+            <div>
+              <ng5-slider [(value)]="principalAmt.value" [options]="poptions" (userChangeEnd)="refresh()"></ng5-slider>
+            </div>
+            <div>
+              <input type="number" class="form-control text-box input-text" (blur)="update(0)"
+                [(ngModel)]="query.amount" min="0" max="2000000" value="$3,00,000" data-index="1"
+                placeholder="Loan Amount" name="principalAmt.highValue"
+               (keyup)="enforceMinMax(this)"/>
+
+              <input class="form-control labelMrtgCalcFormatted input-sub-text"
+                placeholder="{{query.amount | currency:'USD':true:'1.2-2'}}" disabled>
+
+            </div>
+          </div>
+
+
+          <hr />
+
+
+          <div class="form-group">
+            <div>
+              <h4>
+                Interest Rate
+              </h4>
+            </div>
+            <hr />
+            <div>
+              <ng5-slider [(value)]="interest.value" [options]="roptions" (userChangeEnd)="refresh()">
               </ng5-slider>
-              </div>
-              <div>
-              <input type="text" style="width:150px;float:right;margin-top: -90px;" class="form-control" (blur)="tbupdate(1)"
-                  [(ngModel)]="query.interest" placeholder="Interest Rate" name="remi.highValue" />
-                  <input class="form-control labelMrtgCalcFormatted"  style="width:150px;float:right;margin-top: -50px;" placeholder="{{query.interest}}% per annum"
-                 disabled>
             </div>
+            <div>
+              <input type="number" class="form-control input-text" (blur)="update(1)" [(ngModel)]="query.interest"
+                placeholder="Interest Rate" min="0" max="20" (keyup)="enforceMinMax(this)" name="interest.highValue" />
+              <input class="form-control labelMrtgCalcFormatted input-sub-text"
+                placeholder="{{query.interest}}% per annum" disabled>
             </div>
-  
-  
-            <div class="form-group">
-              <div>
-                <h4>
+          </div>
+
+
+          <div class="form-group">
+            <div>
+              <h4>
                 Loan Tenure
-             </h4>
-              </div>
-              <div >
-                <ng5-slider *ngIf="yrToggel" [(value)]="temi.value" [options]="toptions" (userChangeEnd)="update()">
-                </ng5-slider>
-                <ng5-slider *ngIf="!yrToggel" [(value)]="memi.value" [options]="moptions" (userChangeEnd)="update()">
-                </ng5-slider>
-              </div>  
-              <div>
-                <input type="text"  style="width: 15%;float: right;margin-top: -50px;margin-right: 45px;" *ngIf="yrToggel" class="form-control" (blur)="tbupdate(2)"
-                  placeholder="Loan Tenure in Yr" [(ngModel)]="query.tenureYr" style="width:30%;float:right;">
-                <input type="text"  style="width: 15%;float: right;margin-top: -50px;margin-right: 45px;" *ngIf="!yrToggel" class="form-control" (blur)="tbupdate(3)"
-                  placeholder="Loan Tenure in Mo" [(ngModel)]="query.tenureMo" style="width:30%;float:right;">
-              </div>
-              
-    <div>
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" [ngClass]="{'active':yrToggel}"
-          (click)="yrToggel=true;update()" type="button">Yr</button>
-        <button class="btn btn-outline-secondary" [ngClass]="{'active':!yrToggel}"
-          (click)="yrToggel=false;update()" type="button">Mo</button>
-      </div>
-    </div>
-            
+              </h4>
             </div>
-            <br/>
-             
-            <div class="form-group">
-                <div class="input-group">
-                  <span class="input-group-addon mortgageDetailsLabel"
-                        data-tooltip="Determines the number of payments per year.&#013;
-                  Annually:      1 (once a year)&#013;
-                  Semi-Annually: 2 (twice a year)&#013;
-                  Quarterly:     4 times a year&#013;
-                  Bi-Monthly:    6 times a year&#013;
-                  Monthly:       12 times a year&#013;
-                  Semi-Monthly:  24 times a year (2 times per month)&#013;
-                  Bi-Weekly:     26 times a year (once every 2 weeks)&#013;
-                  Weekly:        52 times a year (once a week)&#013;
-                  Acc Bi-Weekly: 26 times a year. 1/2 of monthly payment&#013;
-                  Acc Weekly:    52 times a year. 1/4 of monthly payment"
-                        data-tooltip-position="bottom">Payment Frequency <img width="14px" align="top"
-                                                                              src="./app/img/info.png"></span>
-                  <select [(ngModel)]="PaymentFrequency" name="PaymentFrequency"
-                          id="formInput119" class="form-control labelMrtgCalc">
-                    <option>Annually</option>
-                    <option>Semi-Annually</option>
-                    <option>Quarterly</option>
-                    <option>Bi-Monthly</option>
-                    <option>Monthly</option>
-                    <option>Semi-Monthly</option>
-                    <option>Bi-Weekly</option>
-                    <option>Weekly</option>
-                    <option>Acc. Bi-Weekly</option>
-                    <option>Acc. Weekly</option>
-                  </select>
-                </div>
+            <div>
+              <ng5-slider *ngIf="yrToggle" [(value)]="tenureYrs.value" [options]="toptions" (userChangeEnd)="refresh()">
+              </ng5-slider>
+              <ng5-slider *ngIf="!yrToggle" [(value)]="tenureMths.value" [options]="moptions"
+                (userChangeEnd)="refresh()">
+              </ng5-slider>
+            </div>
+            <div>
+              <input type="text" *ngIf="yrToggle" class="form-control input-small-text" (blur)="update(2)"
+                placeholder="Loan Tenure in Yr" [(ngModel)]="query.tenureYr">
+              <input type="text" *ngIf="!yrToggle" class="form-control input-small-text" (blur)="update(3)"
+                placeholder="Loan Tenure in Mo" [(ngModel)]="query.tenureMo">
+            </div>
+
+            <div>
+              <div class="input-group-append input-sub-text">
+                <button class="btn btn-outline-secondary" [ngClass]="{'active':yrToggle}"
+                  (click)="yrToggle=true;refresh()" type="button">Yr</button>
+                <button class="btn btn-outline-secondary" [ngClass]="{'active':!yrToggle}"
+                  (click)="yrToggle=false;refresh()" type="button">Mo</button>
               </div>
+            </div>
 
-            <hr />
-  
-
-  
-  
           </div>
-  
+          <br />
+
         </div>
-        <div class="col-lg-3">
-          <div class="well">
-  
-            <div class="jusify-center">
-              <h5>
-                Loan EMI
-              </h5>
-              <span class="result">
-                {{result.emi || "--"}}
-              </span>
-            </div>
-  
-            <hr />
-  
-            <div>
-              <h5>
-                Total Interest Payable
-              </h5>
-              <span class="result">
-                {{result.interest || "--"}}
-              </span>
-            </div>
-  
-            <hr />
-            <div>
-              <h5>
-                Total Payment
-              </h5>
-              <h6>
-                (Principal + Interest)
-              </h6>
-              <span class="result">
-                {{result.total || "--"}}
-              </span>
-            </div>
-  
-  
-  
+
+      </div>
+      <div class="col-lg-3">
+        <h4 class="heading-left categoryheader sub-header">Mortgage Calculation</h4>
+        <p>Results of your mortgage calculation:</p>
+        <div class="well">
+
+
+
+          <div class="input-group">
+            <span class="input-group-addon">Principal</span>
+            <span class="result">{{result.principal}}</span>
           </div>
+
+
+          <hr />
+
+          <div class="input-group">
+            <span class="input-group-addon">Interest Payable</span>
+            <span class="result"> {{result.interest || "--"}}</span>
+          </div>
+
+
+
+          <hr />
+
+          <div class="input-group">
+            <span class="input-group-addon">Total Payment</span>
+
+            <span class="result bold"> {{result.total || "--"}}</span>
+          </div>
+
+          <hr />
+
+
+
+
         </div>
       </div>
     </div>
   </div>
+</div>
